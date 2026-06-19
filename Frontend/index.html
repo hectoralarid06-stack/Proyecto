@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portafolio — Programación Web</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Reset & tokens ─────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0d0d0f;
+      --surface:   #141417;
+      --card:      #1b1b1f;
+      --border:    #2a2a30;
+      --accent:    #f47b2b;
+      --accent-lo: rgba(244,123,43,.12);
+      --accent-hi: rgba(244,123,43,.25);
+      --text:      #e8e8ec;
+      --muted:     #7a7a86;
+      --mono:      'JetBrains Mono', monospace;
+      --sans:      'Space Grotesk', sans-serif;
+      --radius:    10px;
+      --timeline:  2px;
+    }
+
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 2.5rem 1.25rem 4rem;
+    }
+
+    /* ── Layout wrapper ─────────────────────────────────────── */
+    .page {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    /* ── Header / datos escolares ───────────────────────────── */
+    header {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      padding: 2rem 2rem 1.75rem;
+      margin-bottom: 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), #ff9a56);
+    }
+
+    .eyebrow {
+      font-family: var(--mono);
+      font-size: .7rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: .75rem;
+    }
+
+    .name {
+      font-size: 2rem;
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -.02em;
+      margin-bottom: .35rem;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem 1.5rem;
+      margin-top: 1rem;
+    }
+
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+      font-size: .82rem;
+      color: var(--muted);
+    }
+
+    .meta-item strong {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .badge {
+      font-family: var(--mono);
+      font-size: .7rem;
+      background: var(--accent-lo);
+      color: var(--accent);
+      border: 1px solid var(--accent-hi);
+      border-radius: 4px;
+      padding: .15rem .5rem;
+      white-space: nowrap;
+    }
+
+    /* ── Section heading ────────────────────────────────────── */
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .section-header h2 {
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: .02em;
+    }
+
+    .section-header .line {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── Timeline list ──────────────────────────────────────── */
+    .timeline {
+      position: relative;
+      padding-left: 2rem;
+      list-style: none;
+    }
+
+    /* vertical rail */
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 8px;
+      top: 10px;
+      bottom: 10px;
+      width: var(--timeline);
+      background: linear-gradient(180deg, var(--accent) 0%, var(--border) 100%);
+      border-radius: 2px;
+    }
+
+    /* ── Task card ──────────────────────────────────────────── */
+    .task-item {
+      position: relative;
+      margin-bottom: 1.25rem;
+    }
+
+    .task-item::before {
+      content: '';
+      position: absolute;
+      left: -1.625rem;
+      top: 1.05rem;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-lo);
+      transform: translateX(-4px);
+      z-index: 1;
+    }
+
+    .task-link {
+      display: block;
+      text-decoration: none;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.1rem 1.25rem;
+      transition: border-color .18s, background .18s, transform .18s;
+    }
+
+    .task-link:hover {
+      border-color: var(--accent);
+      background: var(--surface);
+      transform: translateX(4px);
+    }
+
+    .task-link:hover .task-arrow { opacity: 1; transform: translateX(0); }
+
+    .task-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .task-id {
+      font-family: var(--mono);
+      font-size: .68rem;
+      color: var(--accent);
+      letter-spacing: .06em;
+      margin-bottom: .3rem;
+    }
+
+    .task-title {
+      font-size: .95rem;
+      font-weight: 500;
+      color: var(--text);
+      line-height: 1.35;
+    }
+
+    .task-url {
+      font-family: var(--mono);
+      font-size: .68rem;
+      color: var(--muted);
+      margin-top: .35rem;
+      word-break: break-all;
+    }
+
+    .task-arrow {
+      color: var(--accent);
+      font-size: 1rem;
+      opacity: 0;
+      transform: translateX(-4px);
+      transition: opacity .18s, transform .18s;
+      flex-shrink: 0;
+      align-self: center;
+    }
+
+    /* ── States: loading / error ────────────────────────────── */
+    .state-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .75rem;
+      padding: 3rem 1rem;
+      color: var(--muted);
+      font-size: .9rem;
+      text-align: center;
+    }
+
+    .spinner {
+      width: 28px; height: 28px;
+      border: 2px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .error-icon { font-size: 1.75rem; }
+
+    .error-msg { color: #f47b7b; }
+
+    .retry-btn {
+      margin-top: .25rem;
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: .82rem;
+      padding: .4rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: border-color .15s, color .15s;
+    }
+
+    .retry-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ── Footer ─────────────────────────────────────────────── */
+    footer {
+      margin-top: 3rem;
+      text-align: center;
+      font-family: var(--mono);
+      font-size: .68rem;
+      color: var(--muted);
+      letter-spacing: .06em;
+    }
+
+    /* ── Fade-in animation for cards ────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .task-item { animation: fadeUp .4s ease both; }
+    .task-item:nth-child(1) { animation-delay: .05s; }
+    .task-item:nth-child(2) { animation-delay: .12s; }
+    .task-item:nth-child(3) { animation-delay: .19s; }
+    .task-item:nth-child(4) { animation-delay: .26s; }
+    .task-item:nth-child(5) { animation-delay: .33s; }
+
+    /* ── Responsive ─────────────────────────────────────────── */
+    @media (max-width: 480px) {
+      .name { font-size: 1.5rem; }
+      .meta  { gap: .4rem 1rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <!-- ══ DATOS ESCOLARES ══════════════════════════════════════ -->
+    <header>
+      <p class="eyebrow">Enrique Ivan Noriega Carrasco · Programación Web</p>
+      <h1 class="name">Hector Gabriel Castañeda Alarid</h1>
+
+      <div class="meta">
+        <span class="meta-item">
+          <span class="badge">Matrícula</span>
+          <strong>22040508</strong>
+        </span>
+        <span class="meta-item">
+          <span class="badge">Grupo</span>
+          <strong>03</strong>
+        </span>
+        <span class="meta-item">
+          <span class="badge">Carrera</span>
+          <strong>Ing. en Software</strong>
+        </span>
+      </div>
+    </header>
+
+    <!-- ══ LISTADO DE TAREAS ════════════════════════════════════ -->
+    <section>
+      <div class="section-header">
+        <h2>Tareas del Semestre</h2>
+        <div class="line"></div>
+      </div>
+
+      <div id="container">
+        <!-- Estado inicial: cargando -->
+        <div class="state-box">
+          <div class="spinner"></div>
+          <span>Cargando tareas desde la API…</span>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      DATOS OBTENIDOS VÍA GET /api/tareas &nbsp;·&nbsp; SQLITE + NODE.JS + EXPRESS
+    </footer>
+  </div>
+
+  <!-- ══ JS: FETCH A LA API ════════════════════════════════════ -->
+  <script>
+    const API_URL = "http://localhost:3000/api/tareas";
+    const container = document.getElementById("container");
+
+    async function cargarTareas() {
+      // Mostrar spinner mientras carga
+      container.innerHTML = `
+        <div class="state-box">
+          <div class="spinner"></div>
+          <span>Cargando tareas desde la API…</span>
+        </div>`;
+
+      try {
+        const res  = await fetch(API_URL);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const json = await res.json();
+
+        if (!json.ok || !Array.isArray(json.data) || json.data.length === 0) {
+          throw new Error("La API no devolvió tareas.");
+        }
+
+        renderTareas(json.data);
+
+      } catch (err) {
+        container.innerHTML = `
+          <div class="state-box">
+            <span class="error-icon">⚠️</span>
+            <span class="error-msg">No se pudieron cargar las tareas.</span>
+            <span>${err.message}</span>
+            <button class="retry-btn" onclick="cargarTareas()">Reintentar</button>
+          </div>`;
+      }
+    }
+
+    function renderTareas(tareas) {
+      const ul = document.createElement("ul");
+      ul.className = "timeline";
+
+      tareas.forEach(({ id, titulo, url }) => {
+        const li = document.createElement("li");
+        li.className = "task-item";
+        li.innerHTML = `
+          <a class="task-link" href="${escHtml(url)}" target="_blank" rel="noopener noreferrer">
+            <div class="task-inner">
+              <div>
+                <p class="task-id">TAREA #${String(id).padStart(2,'0')}</p>
+                <p class="task-title">${escHtml(titulo)}</p>
+                <p class="task-url">${escHtml(url)}</p>
+              </div>
+              <span class="task-arrow">↗</span>
+            </div>
+          </a>`;
+        ul.appendChild(li);
+      });
+
+      container.innerHTML = "";
+      container.appendChild(ul);
+    }
+
+    // Escapa HTML para evitar XSS
+    function escHtml(str) {
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    // Arrancar
+    cargarTareas();
+  </script>
+</body>
+</html>
